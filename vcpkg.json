@@ -1,6 +1,6 @@
 {
   "name": "fileutil",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple wrapper std filesystem",
   "homepage": "https://github.com/vtpl1/fileutil",
   "dependencies": [
