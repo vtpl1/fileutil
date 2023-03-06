@@ -10,7 +10,7 @@ project(fileutil
 	DESCRIPTION "A simple wrapper std filesystem"
 	HOMEPAGE_URL "https://github.com/vtpl1/fileutil"
 	LANGUAGES CXX)
-set(COMPONENT1 fileutil)
+set(COMPONENT1 ${PROJECT_NAME})
 find_package(absl REQUIRED strings)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
@@ -40,23 +40,19 @@ target_include_directories(${COMPONENT1}
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>
 		$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
 	PRIVATE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>)
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
+)
 
 set_target_properties(
 	${COMPONENT1} PROPERTIES
-		POSITION_INDEPENDENT_CODE ON)
+		POSITION_INDEPENDENT_CODE ON
+)
 
 set_target_properties(
 	${COMPONENT1} PROPERTIES
 		SOVERSION	${PROJECT_VERSION_MAJOR}
-		VERSION ${PROJECT_VERSION})
-
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-set(CMAKE_CXX_CLANG_TIDY
-	clang-tidy;)
-set(CMAKE_C_CLANG_TIDY
-	clang-tidy;)
-endif()
+		VERSION ${PROJECT_VERSION}
+)
 
 target_link_libraries(${COMPONENT1}
 	PUBLIC absl::strings
@@ -70,8 +66,16 @@ target_link_libraries(${COMPONENT1}
 endif (MSVC)
 
 target_compile_features(${COMPONENT1}
-    PUBLIC cxx_std_17
+	PUBLIC cxx_std_17
 )
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+set(CMAKE_CXX_CLANG_TIDY
+	clang-tidy;)
+set(CMAKE_C_CLANG_TIDY
+	clang-tidy;)
+endif()
+
 
 find_package(Git)
 if(Git_FOUND)
