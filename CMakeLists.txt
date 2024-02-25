@@ -10,6 +10,12 @@ project(fileutil
 	DESCRIPTION "A simple wrapper std filesystem"
 	HOMEPAGE_URL "https://github.com/vtpl1/fileutil"
 	LANGUAGES CXX)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+set(CMAKE_CXX_CLANG_TIDY
+	clang-tidy;)
+set(CMAKE_C_CLANG_TIDY
+	clang-tidy;)
+endif()
 set(COMPONENT1 ${PROJECT_NAME})
 find_package(absl REQUIRED strings)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
@@ -68,14 +74,6 @@ endif (MSVC)
 target_compile_features(${COMPONENT1}
 	PUBLIC cxx_std_17
 )
-
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-set(CMAKE_CXX_CLANG_TIDY
-	clang-tidy;)
-set(CMAKE_C_CLANG_TIDY
-	clang-tidy;)
-endif()
-
 
 find_package(Git)
 if(Git_FOUND)
