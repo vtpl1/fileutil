@@ -28,6 +28,7 @@ list(APPEND COMPONENT1_PUBLIC_HEADERS
 
 add_library(${COMPONENT1}
     src/file_utilities.cpp
+	src/glob.cpp
 )
 
 # target_sources(${COMPONENT1} PUBLIC FILE_SET HEADERS

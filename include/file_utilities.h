@@ -31,6 +31,35 @@ std::string FILEUTIL_EXPORT merge_directories(const std::string& dir_path_0, con
 std::string FILEUTIL_EXPORT merge_directories(const std::string& dir_path, std::vector<std::string>& dir_n_list);
 bool FILEUTIL_EXPORT        delete_directory(const std::string& dir_path);
 bool FILEUTIL_EXPORT        delete_file(const std::string& file_path);
+
+/// \param pathname string containing a path specification
+/// \return vector of paths that match the pathname
+///
+/// Pathnames can be absolute (/usr/src/Foo/Makefile) or relative (../../Tools/*/*.gif)
+/// Pathnames can contain shell-style wildcards
+/// Broken symlinks are included in the results (as in the shell)
+std::vector<std::string> FILEUTIL_EXPORT glob(const std::string& pathname);
+
+/// \param pathnames string containing a path specification
+/// \return vector of paths that match the pathname
+///
+/// Globs recursively.
+/// The pattern “**” will match any files and zero or more directories, subdirectories and
+/// symbolic links to directories.
+std::vector<std::string> FILEUTIL_EXPORT rglob(const std::string& pathname);
+
+/// Runs `glob` against each pathname in `pathnames` and accumulates the results
+std::vector<std::string> FILEUTIL_EXPORT glob(const std::vector<std::string>& pathnames);
+
+/// Runs `rglob` against each pathname in `pathnames` and accumulates the results
+std::vector<std::string> FILEUTIL_EXPORT rglob(const std::vector<std::string>& pathnames);
+
+/// Initializer list overload for convenience
+std::vector<std::string> FILEUTIL_EXPORT glob(const std::initializer_list<std::string>& pathnames);
+
+/// Initializer list overload for convenience
+std::vector<std::string> FILEUTIL_EXPORT rglob(const std::initializer_list<std::string>& pathnames);
+
 } // namespace utilities
 } // namespace vtpl
 #endif // file_utilities_h

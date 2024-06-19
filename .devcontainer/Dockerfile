@@ -13,7 +13,7 @@ RUN apt-get update && apt-get -y install gpg-agent
 
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
 
-ARG LLVM_VERSION=18
+ARG LLVM_VERSION=16
 RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh ${LLVM_VERSION} all
 
 ENV PATH="${PATH}:/usr/lib/llvm-${LLVM_VERSION}/bin"
