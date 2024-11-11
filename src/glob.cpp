@@ -11,12 +11,14 @@ namespace filesystem = std::filesystem;
 /* https://github.com/scylladb/seastar/issues/648 */
 #if __cplusplus >= 201703L && __has_include(<filesystem>)
 #include <filesystem>
-namespace fs = std::filesystem;
+namespace filesystem = std::filesystem;
 #else
 #include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+namespace filesystem = std::experimental::filesystem;
 #endif
 #endif
+
+namespace fs = filesystem;
 
 #include <algorithm>
 #include <cassert>

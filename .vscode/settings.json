@@ -110,7 +110,8 @@
         "__verbose_abort": "cpp",
         "any": "cpp",
         "ranges": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cuchar": "cpp"
     },
     "cmake.options.statusBarVisibility": "visible",
 }
