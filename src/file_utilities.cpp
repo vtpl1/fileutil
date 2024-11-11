@@ -56,14 +56,14 @@ bool vtpl::utilities::create_directories(const std::string& dir_path) {
     return true;
   }
   std::error_code error_code;
-  if (!filesystem::create_directories(dir_path, error_code)) {
+  if (!filesystem::create_directories(dir_path, error_code) && (error_code.value() != 0)) {
     std::cout << "Unable to create directories [" << dir_path << "], "
               << "Error Code[" << error_code.value() << "], "
               << "Error Message[" << error_code.message() << "], "
               << "Error category[" << error_code.category().name() << "] " << '\n';
     return false;
   }
-  return vtpl::utilities::is_directory_exists(dir_path);
+  return is_directory_exists(dir_path);
 }
 
 std::string vtpl::utilities::create_directories_from_file_path(const std::string& file_path) {
@@ -79,7 +79,7 @@ std::string vtpl::utilities::create_directories_from_file_path(const std::string
     // throw std::runtime_error("Directory path is empty" + dir_path);
     return std::string{};
   }
-  if (vtpl::utilities::create_directories(dir_path)) {
+  if (create_directories(dir_path)) {
     return dir_path;
   }
   return std::string{};

@@ -11,41 +11,44 @@ namespace filesystem = std::filesystem;
 /* https://github.com/scylladb/seastar/issues/648 */
 #if __cplusplus >= 201703L && __has_include(<filesystem>)
 #include <filesystem>
-namespace filesystem = std::filesystem;
+namespace fs = std::filesystem;
 #else
 #include <experimental/filesystem>
-namespace filesystem = std::experimental::filesystem;
+namespace fs = std::experimental::filesystem;
 #endif
 #endif
-
-namespace fs = filesystem;
 
 #include <algorithm>
 #include <cassert>
+#include <cuchar>
 #include <map>
 #include <regex>
 #include <string>
 #include <string_view>
 #include <vector>
+#include <iterator>
 
 namespace vtpl {
 namespace glob {
 namespace {
 
-static constexpr auto SPECIAL_CHARACTERS = std::string_view{"()[]{}?*+-|^$\\.&~# \t\n\r\v\f"};
-static const auto     ESCAPE_SET_OPER    = std::regex(std::string{R"([&~|])"});
-static const auto     ESCAPE_REPL_STR    = std::string{R"(\\\1)"};
+constexpr auto SPECIAL_CHARACTERS = std::string_view{"()[]{}?*+-|^$\\.&~# \t\n\r\v\f"};
+const auto     ESCAPE_SET_OPER    = std::regex(std::string{R"([&~|])"});
+const auto     ESCAPE_REPL_STR    = std::string{R"(\\\1)"};
 
-bool string_replace(std::string& str, std::string_view from, std::string_view to) {
-  std::size_t start_pos = str.find(from);
-  if (start_pos == std::string::npos)
+bool stringReplace(std::string& str, std::string_view from, std::string_view to) {
+  const std::size_t start_pos = str.find(from);
+  if (start_pos == std::string::npos) {
     return false;
+  }
   str.replace(start_pos, from.length(), to);
   return true;
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 std::string translate(std::string_view pattern) {
-  std::size_t i = 0, n = pattern.size();
+  std::size_t i = 0;
+  const std::size_t n = pattern.size();
   std::string result_string;
 
   while (i < n) {
@@ -71,7 +74,7 @@ std::string translate(std::string_view pattern) {
       } else {
         auto stuff = std::string(pattern.begin() + i, pattern.begin() + j);
         if (stuff.find("--") == std::string::npos) {
-          string_replace(stuff, std::string_view{"\\"}, std::string_view{R"(\\)"});
+          stringReplace(stuff, std::string_view{"\\"}, std::string_view{R"(\\)"});
         } else {
           std::vector<std::string> chunks;
           std::size_t              k = 0;
@@ -96,8 +99,8 @@ std::string translate(std::string_view pattern) {
           // Hyphens that create ranges shouldn't be escaped.
           bool first = true;
           for (auto& chunk : chunks) {
-            string_replace(chunk, std::string_view{"\\"}, std::string_view{R"(\\)"});
-            string_replace(chunk, std::string_view{"-"}, std::string_view{R"(\-)"});
+            stringReplace(chunk, std::string_view{"\\"}, std::string_view{R"(\\)"});
+            stringReplace(chunk, std::string_view{"-"}, std::string_view{R"(\-)"});
             if (first) {
               stuff += chunk;
               first = false;
@@ -145,20 +148,20 @@ std::string translate(std::string_view pattern) {
   return std::string{"(("} + result_string + std::string{R"()|[\r\n])$)"};
 }
 
-std::regex compile_pattern(std::string_view pattern) { return std::regex(translate(pattern), std::regex::ECMAScript); }
+std::regex compilePattern(std::string_view pattern) { return std::regex(translate(pattern), std::regex::ECMAScript); }
 
 bool fnmatch(std::string&& name, const std::regex& pattern) { return std::regex_match(std::move(name), pattern); }
 
 std::vector<fs::path> filter(const std::vector<fs::path>& names, std::string_view pattern) {
   // std::cout << "Pattern: " << pattern << "\n";
-  const auto            pattern_re = compile_pattern(pattern);
+  const auto            pattern_re = compilePattern(pattern);
   std::vector<fs::path> result;
   std::copy_if(std::make_move_iterator(names.begin()), std::make_move_iterator(names.end()), std::back_inserter(result),
                [&pattern_re](const fs::path& name) { return fnmatch(name.string(), pattern_re); });
   return result;
 }
 
-fs::path expand_tilde(fs::path path) {
+fs::path expandTilde(fs::path path) {
   if (path.empty())
     return path;
 
@@ -287,7 +290,7 @@ std::vector<fs::path> glob(const fs::path& inpath, bool recursive = false, bool 
 
   if (pathname[0] == '~') {
     // expand tilde
-    path = expand_tilde(path);
+    path = expandTilde(path);
   }
 
   auto       dirname  = path.parent_path();
