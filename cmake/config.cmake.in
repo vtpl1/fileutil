@@ -3,5 +3,7 @@
 include(CMakeFindDependencyMacro)
 find_dependency(absl REQUIRED strings)
 
-include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
-check_required_components(@PROJECT_NAME@)
+if(NOT TARGET fileutil::fileutil)
+    include(${CMAKE_CURRENT_LIST_DIR}/fileutil-targets.cmake)
+endif()
+check_required_components(fileutil)
