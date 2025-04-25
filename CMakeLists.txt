@@ -17,7 +17,7 @@ set(CMAKE_C_CLANG_TIDY
 	clang-tidy;)
 endif()
 set(COMPONENT1 ${PROJECT_NAME})
-find_package(absl REQUIRED strings)
+# find_package(absl REQUIRED strings)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 
@@ -61,9 +61,9 @@ set_target_properties(
 		VERSION ${PROJECT_VERSION}
 )
 
-target_link_libraries(${COMPONENT1}
-	PUBLIC absl::strings
-)
+# target_link_libraries(${COMPONENT1}
+# 	PUBLIC absl::strings
+# )
 
 if (MSVC)
 else()

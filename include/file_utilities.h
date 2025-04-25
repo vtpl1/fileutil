@@ -31,7 +31,7 @@ std::string FILEUTIL_EXPORT merge_directories(const std::string& dir_path_0, con
 std::string FILEUTIL_EXPORT merge_directories(const std::string& dir_path, std::vector<std::string>& dir_n_list);
 bool FILEUTIL_EXPORT        delete_directory(const std::string& dir_path);
 bool FILEUTIL_EXPORT        delete_file(const std::string& file_path);
-
+bool FILEUTIL_EXPORT        copy_file(const std::string& source_file, const std::string& destination_file);
 /// \param pathname string containing a path specification
 /// \return vector of paths that match the pathname
 ///

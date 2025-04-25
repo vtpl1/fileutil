@@ -3,9 +3,5 @@
   "version": "1.6.0",
   "description": "A simple wrapper std filesystem",
   "homepage": "https://github.com/vtpl1/fileutil",
-  "dependencies": [
-    {
-      "name": "abseil"
-    }
-  ]
+  "dependencies": []
 }

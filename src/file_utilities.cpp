@@ -155,3 +155,13 @@ bool vtpl::utilities::delete_file(const std::string& file_path) {
   }
   return false;
 }
+
+bool vtpl::utilities::copy_file(const std::string& source_file, const std::string& destination_file) {
+  try {
+    filesystem::copy_file(source_file, destination_file, filesystem::copy_options::overwrite_existing);
+    return true;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+  }
+  return false;
+}
