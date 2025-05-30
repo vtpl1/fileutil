@@ -40,6 +40,26 @@ bool FILEUTIL_EXPORT        copy_file(const std::string& source_file, const std:
 /// Broken symlinks are included in the results (as in the shell)
 std::vector<std::string> FILEUTIL_EXPORT glob(const std::string& pathname);
 
+/// \param pathnames string containing a path specification
+/// \return vector of paths that match the pathname
+///
+/// Globs recursively.
+/// The pattern “**” will match any files and zero or more directories, subdirectories and
+/// symbolic links to directories.
+std::vector<std::string> FILEUTIL_EXPORT rglob(const std::string& pathname);
+
+/// Runs `glob` against each pathname in `pathnames` and accumulates the results
+std::vector<std::string> FILEUTIL_EXPORT glob(const std::vector<std::string>& pathnames);
+
+/// Runs `rglob` against each pathname in `pathnames` and accumulates the results
+std::vector<std::string> FILEUTIL_EXPORT rglob(const std::vector<std::string>& pathnames);
+
+/// Initializer list overload for convenience
+std::vector<std::string> FILEUTIL_EXPORT glob(const std::initializer_list<std::string>& pathnames);
+
+/// Initializer list overload for convenience
+std::vector<std::string> FILEUTIL_EXPORT rglob(const std::initializer_list<std::string>& pathnames);
+
 } // namespace utilities
 } // namespace vtpl
 #endif // file_utilities_h

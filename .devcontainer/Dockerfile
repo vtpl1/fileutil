@@ -18,7 +18,7 @@ RUN wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && ./llvm.sh ${LLVM_VE
 
 ENV PATH="${PATH}:/usr/lib/llvm-${LLVM_VERSION}/bin"
 
-ENV SHELL /bin/bash
+ENV SHELL=/bin/bash
 
 RUN pip3 install -U pip
 RUN pip3 install bump2version
